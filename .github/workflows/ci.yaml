@@ -1,13 +1,21 @@
 name: Terraform CI  # Workflow name
 
-on: 
-  push:             # Trigger this workflow on any push event to any branch
+on:
+    pull_request:
+      branches:
+        - main
 
 jobs:
   terraform-ci:     # Job name
     runs-on: ubuntu-latest    # Use the latest Ubuntu runner for the job
 
     steps:
-      ## Step 1: Checkout the code from the repository
+      # Step 1: Checkout the code from the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+    
+      # Step 2: Set up Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
