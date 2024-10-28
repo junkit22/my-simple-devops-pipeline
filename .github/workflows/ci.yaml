@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest    # Use the latest Ubuntu runner for the job
 
     steps:
-      # Step 1: Checkout the code from the repository
+      
+     defaults:
+        run:
+            working-directory: terraform
+            
+        # Step 1: Checkout the code from the repository
       - name: Checkout repository
         uses: actions/checkout@v3
     
@@ -19,3 +24,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
+    
+      #Step 4: Initialize Terraform
+      - name: Terraform init
+        run: terraform init
