@@ -11,10 +11,9 @@ jobs:
 
     steps:
       
-     defaults:
-        run:
-            working-directory: terraform
-            
+      run:
+        working-directory: terraform
+
         # Step 1: Checkout the code from the repository
       - name: Checkout repository
         uses: actions/checkout@v3
