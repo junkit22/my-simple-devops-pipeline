@@ -8,8 +8,8 @@ on:
 jobs:
   terraform-ci:     # Job name
     runs-on: ubuntu-latest    # Use the latest Ubuntu runner for the job
-    outputs:
-        status: ${{ job.status }}
+    env:
+      NODE_OPTIONS: "--openssl-legacy-provider" # For compatibility with Node 20
     defaults:
         run:
             working-directory: terraform # Points to Terraform folder
