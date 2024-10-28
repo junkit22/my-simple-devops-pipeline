@@ -1,7 +1,9 @@
 name: Terraform CI  # Workflow name
 
-on: 
-  push:             # Trigger this workflow on any push event to any branch
+on:
+    pull_request:
+      branches:
+        - main
 
 jobs:
   terraform-ci:     # Job name
@@ -10,26 +12,27 @@ jobs:
         status: ${{ job.status }}
     defaults:
         run:
-            working-directory: terraform
+            working-directory: terraform # Points to Terraform folder
 
     steps:
-      ## Step 1: Checkout the code from the repository
+        # Step 1: Checkout the code from the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      ## Step 2: Configure AWS credentials for Terraform to access AWS resources
+    
+        ## Step 2: Configure AWS credentials for Terraform to access AWS resources
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}         # AWS access key stored as secret
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # AWS secret key stored as secret
-          aws-region: us-east-1                                       # Set AWS region (replace if needed)
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}         # Store AWS access key as secret
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Store AWS secret key as secret
+            aws-region: us-east-1                                       # Set AWS region
 
-      ## Step 3: Set up Terraform in the environment
-      - name: Set up Terraform
+      # Step 2: Set up Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
-
-      ## Step 4: Initialize Terraform
-      # This will download and configure any required providers and modules
+        with:
+          terraform_wrapper: false
+    
+      #Step 4: Initialize Terraform
       - name: Terraform init
         run: terraform init
